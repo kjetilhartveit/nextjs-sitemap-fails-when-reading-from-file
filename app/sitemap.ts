@@ -2,8 +2,9 @@ import { MetadataRoute } from "next";
 import fs from "fs/promises";
 import path from "path";
 import { unstable_cacheLife } from "next/cache";
+import { cache } from "react";
 
-const getAuthors = async () => {
+const getAuthors = cache(async () => {
   "use cache";
   unstable_cacheLife("seconds");
 
@@ -39,7 +40,7 @@ const getAuthors = async () => {
     };
   });
   return await Promise.all(fileReads);
-};
+});
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const authors = await getAuthors();
