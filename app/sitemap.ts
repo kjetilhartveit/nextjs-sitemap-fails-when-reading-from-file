@@ -1,8 +1,12 @@
 import { MetadataRoute } from "next";
 import fs from "fs/promises";
 import path from "path";
+import { unstable_cacheLife } from "next/cache";
 
-async function getAuthors() {
+const getAuthors = async () => {
+  "use cache";
+  unstable_cacheLife("seconds");
+
   const pathParts = ["content"];
   /**
    * Next.js 15.2.1 fails on the next line with the error:
@@ -35,7 +39,7 @@ async function getAuthors() {
     };
   });
   return await Promise.all(fileReads);
-}
+};
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const authors = await getAuthors();
