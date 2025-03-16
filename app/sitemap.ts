@@ -5,8 +5,12 @@ import { unstable_cacheLife } from "next/cache";
 import { cache } from "react";
 
 const getAuthors = cache(async () => {
-  "use cache";
-  unstable_cacheLife("seconds");
+  console.log("Current working directory:", process.cwd());
+  console.log("Files in cwd:", await fs.readdir(path.join(process.cwd())));
+  console.log(
+    "Path to content/author:",
+    path.join(process.cwd(), "content", "author")
+  );
 
   const pathParts = ["content"];
   /**
