@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import fs from "fs/promises";
 import path from "path";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+async function getAuthors() {
   const pathParts = ["content"];
   /**
    * Next.js 15.2.1 fails on the next line with the error:
@@ -34,8 +34,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       meta,
     };
   });
-  const authors = await Promise.all(fileReads);
+  return await Promise.all(fileReads);
+}
 
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const authors = await getAuthors();
   return authors.map((author) => ({
     url: `https://example.com/authors/${author.meta.slug}`,
   }));
